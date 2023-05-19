@@ -1,7 +1,18 @@
 import datetime
 
+# Determinación del año actual ==========
+FECHA_HOY = datetime.datetime.now()
+ANIO_HOY = FECHA_HOY.year
+# Fin Determinación del año actual ======
+
 def agregar_inmueble(**kwargs): #las primeras son las reglas de validacion
-        inmueble = {'year':year,'metros':metros,'habitaciones':habitaciones, 'garage':True, 'zona': zona, 'estado':estado}
+        inmueble = {'year':year,
+                    'metros':metros,
+                    'habitaciones':habitaciones, 
+                    'garage':True, 
+                    'zona': zona, 
+                    'estado':estado}
+        
         if inmueble['year'] >= 2000 and inmueble['metros'] >= 60 and inmueble['habitaciones'] >= 2 and inmueble['zona'] in ['A','B','C']:
             inmuebles.append(inmueble)
             print(f"""
@@ -15,6 +26,52 @@ def agregar_inmueble(**kwargs): #las primeras son las reglas de validacion
 #[{'year': 2023, 'metros': 80, 'habitaciones': 4, 'garage': True, 'zona': 'B', 'estado': 'Reservado'},{'year': 2003, 'metros': 72, 'habitaciones': 3, 'garage': True, 'zona': 'A', 'estado': 'Disponible'},
 #{'year': 2023, 'metros': 80, 'habitaciones': 4, 'garage': True, 'zona': 'B', 'estado': 'Disponible'}]
 
+# Inicio Validación de campos ==========================
+
+def validar_anio(anio):
+    if validar_entero(anio):
+        anio = int(anio)
+        if anio >= 2000 and anio <= ANIO_HOY:
+            return True
+        else:
+            print(f'El año debe estar comprendido entre 2000 y {ANIO_HOY}')
+            return False
+    else:
+        print('Valor incorrecto para el año de construcción')
+        return False
+    
+def validar_metros(metros):
+    if validar_entero(metros):
+        metros = int(metros)
+        if metros >= 60:
+            return True
+        else:
+            print('Metros no puede ser inferior a 60')
+            return False
+    else:
+        print('Valor incorrecto para la superficie')
+        return False
+
+
+# Fin validación de campos =============================
+
+# Validar tipos de datos ===============================
+
+def validar_entero(entero):
+    if entero.isdigit():
+        return True
+    else:
+        return False
+
+def validar_booleano(valor):
+    if validar_entero(valor):
+        valor = int(valor)    
+        if valor in (0,1):
+            return True
+        else:
+            return False
+    else:
+        return False
 
 def validar_flotante(cadena):
     longitud = len(cadena)
@@ -26,6 +83,8 @@ def validar_flotante(cadena):
         return True
     else:
         return False
+    
+# Fin validar tipo de datos============================
 
 def tiene_garage(valor):
     if valor:
@@ -46,8 +105,6 @@ def coeficiente_zona(zona):
 
 def buscar_inmueble(inmuebles,precio_buscado):
     inmuebles_resultado = list()
-    fecha_hoy = datetime.datetime.now()
-    anio_hoy = fecha_hoy.year
 
     #Imprimiendo encabezado del listado resultado de la busqueda de inmuebles
     print('------------------------------------------------------------------------------------')
@@ -63,7 +120,7 @@ def buscar_inmueble(inmuebles,precio_buscado):
         v_zona = inmueble['zona']
         v_coef_zona = coeficiente_zona(v_zona)
         v_estado = inmueble['estado']
-        v_precio = (v_metros * 100 + v_habitaciones * 500 + v_garage * 1500) * (1 - (anio_hoy - v_anio) / 100) * v_coef_zona
+        v_precio = (v_metros * 100 + v_habitaciones * 500 + v_garage * 1500) * (1 - (ANIO_HOY - v_anio) / 100) * v_coef_zona
         
         inmueble_result = {'year':v_anio,'metros':v_metros,'habitaciones':v_habitaciones, 'garage':True, 'zona': zona, 'estado':estado}
         inmueble_result.update({'precio': v_precio})
@@ -78,15 +135,15 @@ inmuebles = []  #lista para agregar inmuebles
 
 while True:    
     print(f"""
-    Inmobiliaria
-    **********************
-    1 - Ingresar Inmueble
-    2 - Editar Inmueble
-    3 - Eliminar Inmueble
-    4 - Imprimir Lista
-    5 - Busqueda de inmuebles
-    6 - Salir
-    **********************
+Inmobiliaria - MENU
+**********************
+1 - Ingresar Inmueble
+2 - Editar Inmueble
+3 - Eliminar Inmueble
+4 - Imprimir Lista
+5 - Busqueda de inmuebles
+6 - Salir
+**********************
     """)
 
     
@@ -97,8 +154,19 @@ while True:
 
     if accion_usuario == 1:
         print('Ingresar datos del inmueble: ')
-        year = int(input('Año: '))
-        metros = int(input('Metros: '))
+        year = input('Año: ')
+        if validar_anio(year):
+            year = int(year)
+        else:
+            continue
+        
+        metros = input('Metros: ')
+        if validar_metros(metros):
+            metros = int(metros)
+        else:
+            continue
+
+
         habitaciones = int(input('Habitaciones: '))
         garage = True
         zona = input('Zona: ')
@@ -146,6 +214,5 @@ while True:
 
     
             
-
 
 
