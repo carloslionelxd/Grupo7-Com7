@@ -6,22 +6,16 @@ ANIO_HOY = FECHA_HOY.year
 # Fin Determinación del año actual ======
 
 def agregar_inmueble(**kwargs): #las primeras son las reglas de validacion
-        inmueble = {'year':year,
-                    'metros':metros,
-                    'habitaciones':habitaciones, 
-                    'garage':True, 
-                    'zona': zona, 
-                    'estado':estado}
+    inmueble = {'year':year,
+                'metros':metros,
+                'habitaciones':habitaciones, 
+                'garage':garage, 
+                'zona': zona, 
+                'estado': estado}
         
-        if inmueble['year'] >= 2000 and inmueble['metros'] >= 60 and inmueble['habitaciones'] >= 2 and inmueble['zona'] in ['A','B','C']:
-            inmuebles.append(inmueble)
-            print(f"""
-            Se ha ingresado un nuevo inmueble.
-            {inmueble}
-            """)
-
-        else:
-            print('No cumple con los requisitos minimos.')
+    inmuebles.append(inmueble)
+    print('Se ha ingresado un nuevo inmueble.')
+    print(f'{inmueble}')
 
 #[{'year': 2023, 'metros': 80, 'habitaciones': 4, 'garage': True, 'zona': 'B', 'estado': 'Reservado'},{'year': 2003, 'metros': 72, 'habitaciones': 3, 'garage': True, 'zona': 'A', 'estado': 'Disponible'},
 #{'year': 2023, 'metros': 80, 'habitaciones': 4, 'garage': True, 'zona': 'B', 'estado': 'Disponible'}]
@@ -52,6 +46,32 @@ def validar_metros(metros):
         print('Valor incorrecto para la superficie')
         return False
 
+def validar_habitaciones(nro):
+    if validar_entero(nro):
+        habitaciones = int(nro)
+        if habitaciones >= 2:
+            return True
+        else:
+            print('El número de habitaciones no puede ser menor a 2')
+            return False
+    else:
+        print('Valor incorrecto para el número de habitaciones')
+
+def validar_zona(zona):
+    zona = zona.upper()
+    if zona in ('A', 'B', 'C'):
+        return True
+    else:
+        print('Valor incorrecto para la zona')
+        return False
+
+def validar_estado(estado):
+    estado = estado.lower().capitalize()
+    if estado in ('Disponible', 'Reservado', 'Vendido'):
+        return True
+    else:
+        print('Valor incorrecto para el estado')
+        return False
 
 # Fin validación de campos =============================
 
@@ -69,8 +89,10 @@ def validar_booleano(valor):
         if valor in (0,1):
             return True
         else:
+            print('Error: Se esperaba un 0 o 1')
             return False
     else:
+        print('Error: Se esperaba un valor entero')
         return False
 
 def validar_flotante(cadena):
@@ -154,6 +176,7 @@ Inmobiliaria - MENU
 
     if accion_usuario == 1:
         print('Ingresar datos del inmueble: ')
+        print('----------------------------')
         year = input('Año: ')
         if validar_anio(year):
             year = int(year)
@@ -166,11 +189,31 @@ Inmobiliaria - MENU
         else:
             continue
 
+        habitaciones = input('Habitaciones: ')
+        if validar_habitaciones(habitaciones):
+            habitaciones = int(habitaciones)
+        else:
+            continue
 
-        habitaciones = int(input('Habitaciones: '))
-        garage = True
+        
+        garage = input('Tiene Garage? (Ingrese el Nro: 1 = SI, 0 = NO):')
+        if validar_booleano(garage):
+            garage = bool(garage)
+        else:
+            continue
+
         zona = input('Zona: ')
+        if validar_zona(zona):
+            zona = zona.upper()
+        else:
+            continue
+
         estado = input('Estado (Disponible, Reservado, Vendido): ')
+        if validar_estado(estado):
+            estado = estado.lower().capitalize()
+        else:
+            continue
+
         agregar_inmueble()
         #print(inmuebles)
 
