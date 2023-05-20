@@ -90,14 +90,14 @@ def listar(inmuebles):
     for inmueble in inmuebles:
         nombre = inmueble['name']
         estado = inmueble['estado']
-        print(f'{contador} : {nombre} {estado}')
+        print(f'{contador} : {nombre} {estado} ')
         contador += 1
 
 def lista_deinmuebles(inmuebles):
     contador = 1    #uso para poner con items
     for inmueble in inmuebles:
         nombre = inmueble['name']
-        print(f'{contador} : {nombre}.  Año: {inmueble["year"]}.  Metros: {inmueble["metros"]}.  Habitaciones: {inmueble["habitaciones"]}. Zona: {inmueble["zona"]}')
+        print(f'{contador} : {nombre}.  Año: {inmueble["year"]}.  Metros: {inmueble["metros"]}.  Habitaciones: {inmueble["habitaciones"]}. Zona: {inmueble["zona"]}. Estado: {inmueble["estado"]}')
         contador += 1
 
 
